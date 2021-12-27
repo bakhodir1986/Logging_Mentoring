@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BrainstormSessions.ClientModels;
+using BrainstormSessions.Config;
 using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Api
@@ -12,10 +14,12 @@ namespace BrainstormSessions.Api
     public class IdeasController : ControllerBase
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
+        readonly ILog log;
 
         public IdeasController(IBrainstormSessionRepository sessionRepository)
         {
             _sessionRepository = sessionRepository;
+            log = Logger.GetLogger(typeof(IdeasController));
         }
 
         #region snippet_ForSessionAndCreate
@@ -44,12 +48,14 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                log.Error("ModelState.IsValid");
                 return BadRequest(ModelState);
             }
 
             var session = await _sessionRepository.GetByIdAsync(model.SessionId);
             if (session == null)
             {
+                log.Error("ModelState.IsValid");
                 return NotFound(model.SessionId);
             }
 
@@ -101,6 +107,7 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                log.Error("ModelState.IsValid");
                 return BadRequest(ModelState);
             }
 
